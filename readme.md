@@ -4,6 +4,8 @@ The Honey Badgers Discord Bot is designed to show these awesome badgers with tra
 Honey Badgers are the first 10k collection on Bitcoin!
 This bot is tailored specifically for the ([@HoneyBadgers](https://twitter.com/HoneyBadgersBtc)) community.
 
+Users can call the bot like this: !815
+
 ![Beispiel-Bild](images/example.png)
 
 ## Invite Bot to Discord
