@@ -16,7 +16,7 @@ To add the existing HoneyBadgers Discord Bot to your server, you need to have th
 
 1. **Open the Discord Application or Website:** Log in to your account.
 
-2. **Invite the Bot:** Paste the ([Bot](https://discord.com/oauth2/authorize?client_id=1211699777054449747&permissions=51200&scope=bot)) link into your web browser, select the server to which you want to add the bot from the dropdown list, and click on the ‘Authorize’ button. You may be prompted to confirm that you are not a robot.
+2. **Invite the Bot:** Paste the ([Bot](https://discord.com/oauth2/authorize?client_id=1211699777054449747&permissions=50176&scope=bot)) link into your web browser, select the server to which you want to add the bot from the dropdown list, and click on the ‘Authorize’ button. You may be prompted to confirm that you are not a robot.
 
 3. **Verify Bot Presence:** Go to your Discord server to ensure that the bot has been added successfully and is online.
 
