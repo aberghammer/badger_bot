@@ -1,12 +1,9 @@
 const { Client, GatewayIntentBits, EmbedBuilder } = require("discord.js");
-const jsonData = require("./badgersOutput.json");
+const jsonData = require("./nfts_with_rarity_ranking.json");
 require("dotenv").config();
 
 function getObjectByNumber(number) {
-  if (number < 1 || number > jsonData.length) {
-    return null;
-  }
-  return jsonData[number - 1];
+  return jsonData.find((nft) => nft.number === Number(number)) || null;
 }
 
 if (!process.env.BOT_TOKEN) {
@@ -48,6 +45,12 @@ function createEmbed(data) {
       value: attr.value,
       inline: attr.trait_type.length > 8 ? false : true,
     });
+  });
+
+  embed.addFields({
+    name: "Rank (Unofficial)",
+    value: String(data.rank),
+    inline: true,
   });
 
   return embed;
