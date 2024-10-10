@@ -40,6 +40,8 @@ const footerIconURL =
 function createEmbed(data, imageName) {
   const ordiUrl = `https://magiceden.io/ordinals/item-details/${data.id}`;
 
+  const originalImageUrl = data.meta.high_res_img_url;
+
   const embed = new EmbedBuilder()
     .setColor(embedColor)
     .setTitle(`${data.meta.name}`)
@@ -47,6 +49,7 @@ function createEmbed(data, imageName) {
     .setImage(`attachment://${imageName}.png`)
     .setTimestamp()
     .setURL(ordiUrl)
+    .setDescription(`[high-res image](${originalImageUrl})`)
     .setFooter({ text: footerText, iconURL: footerIconURL });
 
   data.meta.attributes.forEach((attr) => {
