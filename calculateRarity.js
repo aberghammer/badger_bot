@@ -1,5 +1,6 @@
 const fs = require("fs");
 
+// const nfts = JSON.parse(fs.readFileSync("nfts_with_numbers.json", "utf8"));
 const nfts = JSON.parse(fs.readFileSync("nfts_with_numbers.json", "utf8"));
 
 const attributeCounts = {};

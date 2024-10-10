@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const nfts = JSON.parse(fs.readFileSync("badgersOutput.json", "utf8"));
+const nfts = JSON.parse(fs.readFileSync("based_angels.json", "utf8"));
 
 nfts.forEach((nft, index) => {
   nft.number = index + 1;
