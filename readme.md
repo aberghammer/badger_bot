@@ -1,26 +1,24 @@
-# Honey Badgers Discord Bot
+# Based Angels Discord Bot
 
-The Honey Badgers Discord Bot is designed to show these awesome badgers with traits and inscription number.
-Honey Badgers are the first 10k collection on Bitcoin!
-This bot is tailored specifically for the ([@HoneyBadgers](https://twitter.com/HoneyBadgersBtc)) community.
+The Based Angels Discord Bot is designed to show these awesome angels with traits and inscription number.
+Based Angels is a unique collection on Bitcoin!
+This bot is tailored specifically for the ([@BasedAngels](https://twitter.com/BasedAngelsBtc)) community.
 
-Users can call the bot like this: !815
-
-![Beispiel-Bild](images/example.png)
+Users can call the bot like this: !3376
 
 ## Invite Bot to Discord
 
 ### Adding the Existing Bot to a Discord Server
 
-To add the existing HoneyBadgers Discord Bot to your server, you need to have the correct permissions on Discord. Make sure you are logged in to your Discord account and have administrative permissions on the server where you want to add the bot. Here’s how you can do it:
+To add the existing Based Angels Discord Bot to your server, you need to have the correct permissions on Discord. Make sure you are logged in to your Discord account and have administrative permissions on the server where you want to add the bot. Here’s how you can do it:
 
 1. **Open the Discord Application or Website:** Log in to your account.
 
-2. **Invite the Bot:** Paste the ([Bot](https://discord.com/oauth2/authorize?client_id=1211699777054449747&permissions=50176&scope=bot)) link into your web browser, select the server to which you want to add the bot from the dropdown list, and click on the ‘Authorize’ button. You may be prompted to confirm that you are not a robot.
+2. **Invite the Bot:** Paste the ([Bot](https://discord.com/oauth2/authorize?client_id=1293881398129725460&permissions=117760&integration_type=0&scope=bot)) link into your web browser, select the server to which you want to add the bot from the dropdown list, and click on the ‘Authorize’ button. You may be prompted to confirm that you are not a robot.
 
 3. **Verify Bot Presence:** Go to your Discord server to ensure that the bot has been added successfully and is online.
 
-By following these steps, you can easily add the HoneyBadgers Discord Bot to any server for which you have the necessary permissions, enabling you to start using the bot’s features immediately.
+By following these steps, you can easily add the Based Angels Discord Bot to any server for which you have the necessary permissions, enabling you to start using the bot’s features immediately.
 
 ## Run Bot yourself
 
@@ -38,8 +36,8 @@ Follow these instructions to get your bot up and running on your server.
 Start by cloning the repository to your local machine or server:
 
 ```bash
-git clone https://github.com/aberghammer/badger_bot.git
-cd badger_bot
+git clone https://github.com/aberghammer/based_angels_bot.git
+cd based_angels_bot
 ```
 
 2. **Install Dependencies**
@@ -65,8 +63,13 @@ You can obtain a bot token by creating an application in the [Discord Developer 
 Launch the bot by running:
 
 ```bash
-node ./bot.js
+node ./bot.mjs
 ```
+
+5. **Get the images**
+
+If you want to use it with Based Angel images you can call the downloadAllImages.mjs and if necessary compress them after download with compressImage.mjs.
+The folder "compressed" is necessary to make it work.
 
 Ensure that your bot is online and connected to your Discord server.
 
@@ -82,7 +85,7 @@ To invite the bot to your Discord server, follow these steps:
 
 ## Features
 
-- **Collection Display**: The bot can fetch and display items from the BTC @HoneyBadgers 10k collection.
+- **Collection Display**: The bot can fetch and display items from the Based Angels collection.
 
 ## Contributing
 
@@ -101,4 +104,4 @@ Distributed under the MIT License.
 ## Contact
 
 Andreas Berghammer - [@a_berghammer](https://twitter.com/a_berghammer)
-Project Link: [https://github.com/aberghammer/badger_bot.git](https://github.com/aberghammer/badger_bot.git)
+Project Link: [https://github.com/aberghammer/badger_bot/tree/based_angels](https://github.com/aberghammer/badger_bot/tree/based_angels)
