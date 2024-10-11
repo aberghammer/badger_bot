@@ -60,11 +60,11 @@ function createEmbed(data, imageName) {
     });
   });
 
-  embed.addFields({
-    name: "Rank (Unofficial)",
-    value: String(data.rank),
-    inline: true,
-  });
+  // embed.addFields({
+  //   name: "Rank (Unofficial)",
+  //   value: String(data.rank),
+  //   inline: true,
+  // });
 
   return embed;
 }

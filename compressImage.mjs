@@ -12,7 +12,7 @@ if (!fs.existsSync(outputDir)) {
 }
 
 // Bildkompressionseinstellungen
-const width = 128; // Breite des Thumbnails, z. B. 128 Pixel
+const width = 200; // Breite des Thumbnails, z. B. 128 Pixel
 const quality = 80; // JPEG-Qualität, z. B. 80%
 
 async function compressImages() {
