@@ -73,7 +73,7 @@ async function createEmbed(data) {
     .setThumbnail("attachment://badger.png")
     .setImage("attachment://badger.gif")
     .setTimestamp()
-    .setURL(`https://badgers.club/api/badgers/${data.number}`)
+    .setURL(`https://badgers.club/badgers/${data.number}`)
     .setDescription("[Magic Eden](" + magicEdenUrl + ")")
     .setFooter({ text: footerText, iconURL: footerIconURL });
 
