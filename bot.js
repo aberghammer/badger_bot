@@ -1,4 +1,9 @@
-const { Client, GatewayIntentBits, EmbedBuilder } = require("discord.js");
+const {
+  Client,
+  GatewayIntentBits,
+  EmbedBuilder,
+  AttachmentBuilder,
+} = require("discord.js");
 const jsonData = require("./nfts_with_rarity_ranking.json");
 require("dotenv").config();
 
@@ -24,19 +29,52 @@ const footerText = "made by andi with lots of ❤️";
 const footerIconURL =
   "https://berghammer.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FLogo_Name_Color_Black.f1c14d24.png&w=64&q=75";
 
-function createEmbed(data) {
-  const imageUrl = `https://ordiscan.com/content/${data.id}`;
-  const ordiUrl = `https://magiceden.io/ordinals/item-details/${data.id}`;
+async function createEmbed(data) {
+  const queryBadger = await fetch(
+    `https://badgers.club/api/badgers/${data.number}`
+  );
+  const badger = await queryBadger.json();
 
-  // console.log("image", imageUrl);
+  const params = {
+    background: badger.background.image,
+    body: badger.body.image,
+    claws: badger.claws.image,
+    mane: badger.mane.image,
+    eyes: badger.eyes.image,
+    artifact: badger.artifact.image,
+    headgear: badger.headgear.image,
+  };
+
+  const queryString = new URLSearchParams(params).toString();
+
+  const gifUrl = `https://badgers.club/api/images?${queryString}&animated=true`;
+  const imageUrl = `https://badgers.club/api/images?${queryString}`;
+  const magicEdenUrl = `https://magiceden.io/ordinals/item-details/${data.id}`;
+
+  const gifResponse = await fetch(gifUrl);
+  const gifArrayBuffer = await gifResponse.arrayBuffer();
+  const gifBuffer = Buffer.from(gifArrayBuffer);
+  const gifAttachment = new AttachmentBuilder(gifBuffer, {
+    name: "badger.gif",
+    description: `Animated image of Badger #${data.number}`,
+  });
+
+  const imageResponse = await fetch(imageUrl);
+  const imageArrayBuffer = await imageResponse.arrayBuffer();
+  const imageBuffer = Buffer.from(imageArrayBuffer);
+  const imageAttachment = new AttachmentBuilder(imageBuffer, {
+    name: "badger.png",
+    description: `Image of Badger #${data.number}`,
+  });
 
   const embed = new EmbedBuilder()
     .setColor(embedColor)
     .setTitle(`${data.meta.name}`)
-    .setThumbnail(imageUrl)
-    .setImage(imageUrl)
+    .setThumbnail("attachment://badger.png")
+    .setImage("attachment://badger.gif")
     .setTimestamp()
-    .setURL(ordiUrl)
+    .setURL(`https://badgers.club/api/badgers/${data.number}`)
+    .setDescription("[Magic Eden](" + magicEdenUrl + ")")
     .setFooter({ text: footerText, iconURL: footerIconURL });
 
   data.meta.attributes.forEach((attr) => {
@@ -48,12 +86,12 @@ function createEmbed(data) {
   });
 
   embed.addFields({
-    name: "Rank (Unofficial)",
-    value: String(data.rank),
+    name: "Rank (badgers.club)",
+    value: String(badger.rank),
     inline: true,
   });
 
-  return embed;
+  return { embed, files: [gifAttachment, imageAttachment] };
 }
 
 client.on("ready", () => {
@@ -70,10 +108,11 @@ client.on("messageCreate", async (message) => {
       const data = getObjectByNumber(command);
       // console.log(data);
 
-      const embed = createEmbed(data);
-      // console.log(embed);
+      const { embed, files } = await createEmbed(data);
+
+      console.log(embed);
       try {
-        await message.channel.send({ embeds: [embed] });
+        await message.channel.send({ embeds: [embed], files });
       } catch (sendError) {
         console.error("Error sending message:", sendError);
 
