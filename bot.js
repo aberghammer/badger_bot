@@ -87,7 +87,7 @@ async function createEmbed(data) {
 
   embed.addFields({
     name: "Rank (badgers.club)",
-    value: String(badger.rank),
+    value: String(badger.rank_norm),
     inline: true,
   });
 
