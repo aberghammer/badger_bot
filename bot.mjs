@@ -19,6 +19,34 @@ function getObjectByNumber(number) {
   return jsonData.find((nft) => nft.number === Number(number)) || null;
 }
 
+async function getListingPriceById(listingId) {
+  try {
+    // API-Request für Listings
+    const response = await fetch("https://basedangels.net/api/listings/");
+    const data = await response.json();
+
+    // Listings-Array extrahieren
+    const listings = data.listings;
+
+    if (!listings || listings.length === 0) {
+      throw new Error("No listings found in the API response.");
+    }
+
+    // Filter nach der spezifischen ID
+    const listing = listings.find((item) => item.id === listingId);
+
+    if (!listing) {
+      throw new Error(`Listing with ID ${listingId} not found.`);
+    }
+
+    // Preis zurückgeben
+    return listing;
+  } catch (error) {
+    console.error("Error fetching or processing listings:", error);
+    return null;
+  }
+}
+
 if (!process.env.BASED_ANGELS_TOKEN) {
   console.error("Missing BOT_TOKEN in environment variables");
   process.exit(1);
@@ -37,8 +65,29 @@ const footerText = "made by andi with lots of ❤️";
 const footerIconURL =
   "https://berghammer.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FLogo_Name_Color_Black.f1c14d24.png&w=64&q=75";
 
-function createEmbed(data, imageName) {
+async function createEmbed(data, imageName) {
   const ordiUrl = `https://magiceden.io/ordinals/item-details/${data.id}`;
+
+  // Hole das Listing
+  let listing;
+  try {
+    listing = await getListingPriceById(data.number);
+
+    console.log("-----------------------");
+    console.log("Listing:", listing);
+    console.log("-----------------------");
+  } catch (error) {
+    console.error(`Error fetching listing for token ${data.number}:`, error);
+  }
+
+  // Listing-Preis und Status vorbereiten
+  const listedPrice = listing ? `${listing.listedPrice} BTC` : "Not listed";
+
+  console.log("Listing:", listedPrice);
+
+  const pendingStatus = listing?.pending ? " (Pending)" : "";
+
+  console.log("Pending:", pendingStatus);
 
   const originalImageUrl = data.meta.high_res_img_url;
 
@@ -49,7 +98,7 @@ function createEmbed(data, imageName) {
     .setImage(`attachment://${imageName}.png`)
     .setTimestamp()
     .setURL(ordiUrl)
-    .setDescription(`[high-res image](${originalImageUrl})`)
+    .setDescription(`[high-res image](${originalImageUrl})`) // Nur, wenn der Link verfügbar ist
     .setFooter({ text: footerText, iconURL: footerIconURL });
 
   data.meta.attributes.forEach((attr) => {
@@ -60,11 +109,20 @@ function createEmbed(data, imageName) {
     });
   });
 
-  // embed.addFields({
-  //   name: "Rank (Unofficial)",
-  //   value: String(data.rank),
-  //   inline: true,
-  // });
+  // Listing-Details nur hinzufügen, wenn sie valide sind
+  if (listing) {
+    embed.addFields({
+      name: "Listing Price",
+      value: `${listedPrice}${pendingStatus}`,
+      inline: true,
+    });
+  } else {
+    embed.addFields({
+      name: "Listing Price",
+      value: "Not listed",
+      inline: true,
+    });
+  }
 
   return embed;
 }
@@ -94,7 +152,7 @@ client.on("messageCreate", async (message) => {
       }
 
       const imageAttachment = new AttachmentBuilder(compressedImagePath);
-      const embed = createEmbed(data, data.number);
+      const embed = await createEmbed(data, data.number);
 
       await message.channel.send({
         embeds: [embed],
@@ -102,7 +160,7 @@ client.on("messageCreate", async (message) => {
       });
     } catch (error) {
       console.error("Error:", error);
-      await message.channel.send("No Badger found.");
+      await message.channel.send("No Angel found.");
     }
   }
 });
