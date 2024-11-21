@@ -72,57 +72,63 @@ async function createEmbed(data, imageName) {
   let listing;
   try {
     listing = await getListingPriceById(data.number);
-
-    console.log("-----------------------");
-    console.log("Listing:", listing);
-    console.log("-----------------------");
   } catch (error) {
     console.error(`Error fetching listing for token ${data.number}:`, error);
   }
 
   // Listing-Preis und Status vorbereiten
   const listedPrice = listing ? `${listing.listedPrice} BTC` : "Not listed";
-
-  console.log("Listing:", listedPrice);
-
   const pendingStatus = listing?.pending ? " (Pending)" : "";
-
-  console.log("Pending:", pendingStatus);
 
   const originalImageUrl = data.meta.high_res_img_url;
 
+  // Maximale Länge von `trait_type` berechnen
+  const maxTraitLength = Math.max(
+    ...data.meta.attributes.map((attr) => attr.trait_type.length)
+  );
+
+  // Attribute mit fester Einrückung formatieren
+  const attributesList = data.meta.attributes
+    .map((attr) => {
+      const paddedTrait = attr.trait_type.padEnd(maxTraitLength); // Feste Breite für den Typ
+      return `• ${paddedTrait}: ${attr.value}`;
+    })
+    .join("\n");
+  // Embed erstellen
   const embed = new EmbedBuilder()
     .setColor(embedColor)
-    .setTitle(`${data.meta.name}`)
+    .setTitle(`${data.meta.name}`) // Emoji hinzufügen
     .setThumbnail(`attachment://${imageName}.png`)
     .setImage(`attachment://${imageName}.png`)
     .setTimestamp()
     .setURL(ordiUrl)
     .setDescription(`[high-res image](${originalImageUrl})`) // Nur, wenn der Link verfügbar ist
+
     .setFooter({ text: footerText, iconURL: footerIconURL });
 
-  data.meta.attributes.forEach((attr) => {
-    embed.addFields({
-      name: attr.trait_type,
-      value: attr.value,
-      inline: attr.trait_type.length > 8 ? false : true,
-    });
-  });
-
-  // Listing-Details nur hinzufügen, wenn sie valide sind
-  if (listing) {
-    embed.addFields({
-      name: "Listing Price",
-      value: `${listedPrice}${pendingStatus}`,
+  // Felder formatieren
+  embed.addFields(
+    {
+      name: "💰 Listing Price",
+      value: `\`\`\`${listedPrice}${pendingStatus}\`\`\``,
       inline: true,
-    });
-  } else {
-    embed.addFields({
-      name: "Listing Price",
-      value: "Not listed",
+    },
+    {
+      name: "💎 Rarity Rank",
+      value: `\`\`\`${data.rank}\`\`\``,
       inline: true,
-    });
-  }
+    },
+    {
+      name: "📜 Attributes",
+      value: `\`\`\`\n${attributesList || "No attributes available"}\n\`\`\``, // Liste mit fester Einrückung
+      inline: false, // Attribute auf voller Breite anzeigen
+    },
+    {
+      name: "🖼️ Image",
+      value: `[High-Res Image](${originalImageUrl})`,
+      inline: false,
+    }
+  );
 
   return embed;
 }
