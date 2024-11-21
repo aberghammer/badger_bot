@@ -102,8 +102,6 @@ async function createEmbed(data, imageName) {
     .setImage(`attachment://${imageName}.png`)
     .setTimestamp()
     .setURL(ordiUrl)
-    .setDescription(`[high-res image](${originalImageUrl})`) // Nur, wenn der Link verfügbar ist
-
     .setFooter({ text: footerText, iconURL: footerIconURL });
 
   // Felder formatieren
