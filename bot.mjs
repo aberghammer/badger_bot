@@ -98,7 +98,6 @@ async function createEmbed(data, imageName) {
   const embed = new EmbedBuilder()
     .setColor(embedColor)
     .setTitle(`${data.meta.name}`) // Emoji hinzufügen
-    .setThumbnail(`attachment://${imageName}.png`)
     .setImage(`attachment://${imageName}.png`)
     .setTimestamp()
     .setURL(ordiUrl)
@@ -120,11 +119,6 @@ async function createEmbed(data, imageName) {
       name: "📜 Attributes",
       value: `\`\`\`\n${attributesList || "No attributes available"}\n\`\`\``, // Liste mit fester Einrückung
       inline: false, // Attribute auf voller Breite anzeigen
-    },
-    {
-      name: "🖼️ Image",
-      value: `[High-Res Image](${originalImageUrl})`,
-      inline: false,
     }
   );
 
