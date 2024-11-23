@@ -1,17 +1,6 @@
-import {
-  Client,
-  GatewayIntentBits,
-  EmbedBuilder,
-  AttachmentBuilder,
-} from "discord.js";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
+import { Client, GatewayIntentBits, EmbedBuilder } from "discord.js";
 import dotenv from "dotenv";
 import jsonData from "./nfts_with_rarity_ranking.json" assert { type: "json" };
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -65,8 +54,9 @@ const footerText = "made by andi with lots of ❤️";
 const footerIconURL =
   "https://berghammer.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FLogo_Name_Color_Black.f1c14d24.png&w=64&q=75";
 
-async function createEmbed(data, imageName) {
+async function createEmbed(data) {
   const ordiUrl = `https://magiceden.io/ordinals/item-details/${data.id}`;
+  const imageUrl = `https://bis-ord-renders.fra1.cdn.digitaloceanspaces.com/renders/${data.id}.png`;
 
   // Hole das Listing
   let listing;
@@ -80,8 +70,6 @@ async function createEmbed(data, imageName) {
   const listedPrice = listing ? `${listing.listedPrice} BTC` : "Not listed";
   const pendingStatus = listing?.pending ? " (Pending)" : "";
 
-  const originalImageUrl = data.meta.high_res_img_url;
-
   // Maximale Länge von `trait_type` berechnen
   const maxTraitLength = Math.max(
     ...data.meta.attributes.map((attr) => attr.trait_type.length)
@@ -94,11 +82,12 @@ async function createEmbed(data, imageName) {
       return `• ${paddedTrait}: ${attr.value}`;
     })
     .join("\n");
+
   // Embed erstellen
   const embed = new EmbedBuilder()
     .setColor(embedColor)
-    .setTitle(`${data.meta.name}`) // Emoji hinzufügen
-    .setImage(`attachment://${imageName}.png`)
+    .setTitle(`${data.meta.name}`)
+    .setImage(imageUrl) // Verwende die dynamische URL
     .setTimestamp()
     .setURL(ordiUrl)
     .setFooter({ text: footerText, iconURL: footerIconURL });
@@ -117,8 +106,8 @@ async function createEmbed(data, imageName) {
     },
     {
       name: "📜 Attributes",
-      value: `\`\`\`\n${attributesList || "No attributes available"}\n\`\`\``, // Liste mit fester Einrückung
-      inline: false, // Attribute auf voller Breite anzeigen
+      value: `\`\`\`\n${attributesList || "No attributes available"}\n\`\`\``,
+      inline: false,
     }
   );
 
@@ -139,22 +128,10 @@ client.on("messageCreate", async (message) => {
       const data = getObjectByNumber(command);
       if (!data) throw new Error("NFT not found");
 
-      const compressedImagePath = path.join(
-        __dirname,
-        "compressed",
-        `${data.number}.png`
-      );
-
-      if (!fs.existsSync(compressedImagePath)) {
-        throw new Error("Compressed image not found");
-      }
-
-      const imageAttachment = new AttachmentBuilder(compressedImagePath);
-      const embed = await createEmbed(data, data.number);
+      const embed = await createEmbed(data);
 
       await message.channel.send({
         embeds: [embed],
-        files: [imageAttachment],
       });
     } catch (error) {
       console.error("Error:", error);
