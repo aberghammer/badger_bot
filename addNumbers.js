@@ -1,9 +1,9 @@
-const fs = require("fs");
+import { readFileSync, writeFileSync } from "fs";
 
-const nfts = JSON.parse(fs.readFileSync("based_angels.json", "utf8"));
+const nfts = JSON.parse(readFileSync("frugs.json", "utf8"));
 
 nfts.forEach((nft, index) => {
   nft.number = index + 1;
 });
 
-fs.writeFileSync("nfts_with_numbers.json", JSON.stringify(nfts, null, 2));
+writeFileSync("nfts_with_numbers.json", JSON.stringify(nfts, null, 2));

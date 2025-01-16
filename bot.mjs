@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits, EmbedBuilder } from "discord.js";
 import dotenv from "dotenv";
-import jsonData from "./nfts_with_rarity_ranking.json" assert { type: "json" };
+import jsonData from "./nfts_with_rarity_ranking.json" with { type: "json" };
 
 dotenv.config();
 
@@ -8,35 +8,7 @@ function getObjectByNumber(number) {
   return jsonData.find((nft) => nft.number === Number(number)) || null;
 }
 
-async function getListingPriceById(listingId) {
-  try {
-    // API-Request für Listings
-    const response = await fetch("https://basedangels.net/api/listings/");
-    const data = await response.json();
-
-    // Listings-Array extrahieren
-    const listings = data.listings;
-
-    if (!listings || listings.length === 0) {
-      throw new Error("No listings found in the API response.");
-    }
-
-    // Filter nach der spezifischen ID
-    const listing = listings.find((item) => item.id === listingId);
-
-    if (!listing) {
-      throw new Error(`Listing with ID ${listingId} not found.`);
-    }
-
-    // Preis zurückgeben
-    return listing;
-  } catch (error) {
-    console.error("Error fetching or processing listings:", error);
-    return null;
-  }
-}
-
-if (!process.env.BASED_ANGELS_TOKEN) {
+if (!process.env.FRUG_TOKEN) {
   console.error("Missing BOT_TOKEN in environment variables");
   process.exit(1);
 }
@@ -57,18 +29,6 @@ const footerIconURL =
 async function createEmbed(data) {
   const ordiUrl = `https://magiceden.io/ordinals/item-details/${data.id}`;
   const imageUrl = `https://bis-ord-renders.fra1.cdn.digitaloceanspaces.com/renders/${data.id}.png`;
-
-  // Hole das Listing
-  let listing;
-  try {
-    listing = await getListingPriceById(data.number);
-  } catch (error) {
-    console.error(`Error fetching listing for token ${data.number}:`, error);
-  }
-
-  // Listing-Preis und Status vorbereiten
-  const listedPrice = listing ? `${listing.listedPrice} BTC` : "Not listed";
-  const pendingStatus = listing?.pending ? " (Pending)" : "";
 
   // Maximale Länge von `trait_type` berechnen
   const maxTraitLength = Math.max(
@@ -94,11 +54,6 @@ async function createEmbed(data) {
 
   // Felder formatieren
   embed.addFields(
-    {
-      name: "💰 Listing Price",
-      value: `\`\`\`${listedPrice}${pendingStatus}\`\`\``,
-      inline: true,
-    },
     {
       name: "💎 Rarity Rank",
       value: `\`\`\`${data.rank}\`\`\``,
@@ -140,4 +95,4 @@ client.on("messageCreate", async (message) => {
   }
 });
 
-client.login(process.env.BASED_ANGELS_TOKEN);
+client.login(process.env.FRUG_TOKEN);

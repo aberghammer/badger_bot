@@ -1,9 +1,9 @@
-const fs = require("fs");
+import { readFile } from "fs";
 
 const jsonFilePath = "nfts_with_rarity_ranking.json";
 
 // JSON-Datei einlesen
-fs.readFile(jsonFilePath, "utf8", (err, jsonString) => {
+readFile(jsonFilePath, "utf8", (err, jsonString) => {
   if (err) {
     console.log("Fehler beim Lesen der Datei:", err);
     return;

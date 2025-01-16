@@ -1,7 +1,7 @@
-const fs = require("fs");
+import { readFileSync, writeFileSync } from "fs";
 
 // const nfts = JSON.parse(fs.readFileSync("nfts_with_numbers.json", "utf8"));
-const nfts = JSON.parse(fs.readFileSync("nfts_with_numbers.json", "utf8"));
+const nfts = JSON.parse(readFileSync("nfts_with_numbers.json", "utf8"));
 
 const attributeCounts = {};
 nfts.forEach((nft) => {
@@ -29,7 +29,7 @@ nfts.forEach((nft, index) => {
   nft.rank = index + 1;
 });
 
-fs.writeFileSync(
+writeFileSync(
   "nfts_with_rarity_ranking.json",
   JSON.stringify(nfts, null, 2)
 );

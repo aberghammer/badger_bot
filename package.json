@@ -1,7 +1,7 @@
 {
   "name": "badgers_bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "The Based Angels Discord Bot is designed to show these awesome angels with traits and inscription number.\r Based Angels is a unique collection on Bitcoin!\r This bot is tailored specifically for the ([@BasedAngels](https://twitter.com/BasedAngelsBtc)) community.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,10 +10,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.14.1",
-    "dotenv": "^16.4.5",
+    "discord.js": "^14.17.3",
+    "dotenv": "^16.4.7",
     "node-fetch": "^3.3.2",
     "puppeteer": "^23.5.2",
     "sharp": "^0.33.5"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aberghammer/badger_bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aberghammer/badger_bot/issues"
+  },
+  "homepage": "https://github.com/aberghammer/badger_bot#readme",
+  "type": "module"
 }
