@@ -30,6 +30,7 @@ async function createEmbed(data) {
   const ordiUrl = `https://magiceden.io/ordinals/item-details/${data.id}`;
   const imageUrl = `https://bis-ord-renders.fra1.cdn.digitaloceanspaces.com/renders/${data.id}.png`;
 
+
   // Maximale Länge von `trait_type` berechnen
   const maxTraitLength = Math.max(
     ...data.meta.attributes.map((attr) => attr.trait_type.length)
@@ -90,7 +91,7 @@ client.on("messageCreate", async (message) => {
       });
     } catch (error) {
       console.error("Error:", error);
-      await message.channel.send("No Angel found.");
+      await message.channel.send("No Frug found.");
     }
   }
 });
